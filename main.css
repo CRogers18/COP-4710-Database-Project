@@ -1,9 +1,10 @@
-header h1
+header h1, h2
 {
 	background: green;
 	color: yellow;
 	font-family: arial;
 	padding: 20px;
+	text-align: center;
 }
 
 body 
@@ -31,4 +32,16 @@ body ul li
 	list-style-type: none;
 	display: inline-block;
 	padding: 5px;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #ddd;
+}
+
+th, td {
+    text-align: center;
+    padding: 8px;
 }
