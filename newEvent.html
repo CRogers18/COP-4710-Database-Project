@@ -1,12 +1,29 @@
 <!DOCTYPE html>
 <html>
 	
+	<header>
+		<h1>Events@UCF</h1>
+	</header>
+
+	<!-- Displaying this will require a permission level check, will not display options for users below the requisite level -->
+	<ul>
+		<!-- Visible to all users -->
+		<li><a href="mainPage.html">Home</a></li>
+		<li><a href="rsoRequestForm.html">Create a New RSO</a></li>
+		<li><a href="newEvent.html">Make an Event</a></li>
+		<!-- Visible to Admins ONLY -->
+		<li><a href="newEvent.html">RSO Management</a></li>
+		<!-- Visible to Super Admins ONLY -->
+		<li><a href="">Control Panel</a></li>
+		<li><a href="">Event and RSO Requests</a></li>
+	</ul>
+
 	<head>
 		<title>Make a New Event</title>
 		<link href="main.css" rel="stylesheet" type="text/css" />
 	</head>
 	
-	<body>
+	<body align="center">
 
 		<header>
 			<h1>Make a New Event</h1>
@@ -24,6 +41,7 @@
 				<option value="tech_t">Tech Talks</option>
 			</select><br><br>
 
+			<!-- Access level should only be set-able by admins, do not show for students applying to make their own event -->
 			<strong>Access Level</strong><br>
 			<select name="access_lvl">
 				<option value="Public">Public</option>
@@ -32,7 +50,7 @@
 			</select><br><br>
 
 			<strong>Description</strong><br>
-			<textarea name="desc" rows = "15" cols = "30">Enter an event description here
+			<textarea name="desc" rows = "15" cols = "50">Enter an event description here
 			</textarea><br><br>
 
 			<strong>Event Time</strong><br>

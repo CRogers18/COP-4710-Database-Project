@@ -22,6 +22,11 @@ p
 	color: #000;
 }
 
+a
+{
+	text-decoration: none;
+}
+
 body ul
 {
 	margin: 0px;
