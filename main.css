@@ -7,9 +7,16 @@ header h1, h2
 	text-align: center;
 }
 
+body img
+{
+	width: 250px;
+	height: auto;
+}
+
 body 
 {
 	font-family: arial;
+	font-size: 24px;
 }
 
 h1
@@ -42,14 +49,16 @@ body ul li
 	color: yellow;
 }
 
-table {
+table 
+{
     border-collapse: collapse;
     border-spacing: 0;
     width: 100%;
     border: 1px solid #ddd;
 }
 
-th, td {
+th, td 
+{
     text-align: center;
     padding: 8px;
 }
