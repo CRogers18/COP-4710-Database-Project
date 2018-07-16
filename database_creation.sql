@@ -6,6 +6,7 @@ CREATE TABLE universities(
     university_id INT NOT NULL AUTO_INCREMENT,
     university_name VARCHAR(50),
     university_location VARCHAR(500),
+    PRIMARY KEY (university_id),
     UNIQUE(university_id)
 );
 
@@ -38,6 +39,7 @@ CREATE TABLE rso_member_lists(
 );
 
 CREATE TABLE events(
+    event_id INT NOT NULL,
     event_name VARCHAR(150),
     event_category VARCHAR(25),
     event_time DATETIME,
@@ -46,5 +48,9 @@ CREATE TABLE events(
     event_privacy VARCHAR(10),
     event_location_name VARCHAR(50),
     event_location_latitude REAL,
-    event_location_longitude REAL
+    event_location_longitude REAL,
+    owner_id INT NOT NULL,
+    rso_id INT,
+    university_id INT,
+    PRIMARY KEY (event_id)
 );
