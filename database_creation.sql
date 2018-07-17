@@ -1,5 +1,3 @@
-CREATE DATABASE project;
-
 USE project;
 
 CREATE TABLE universities(
@@ -22,8 +20,10 @@ CREATE TABLE rsos(
 
 CREATE TABLE users(
     userid INT NOT NULL AUTO_INCREMENT,
-    user_password VARCHAR(25),
-    access_level VARCHAR (15),
+    user_name VARCHAR(50) NOT NULL,
+    user_password VARCHAR(50) NOT NULL,
+    user_univ VARCHAR(10),
+    access_level INT NOT NULL,
     PRIMARY KEY (userid),
     UNIQUE (userid)
 );
@@ -39,7 +39,7 @@ CREATE TABLE rso_member_lists(
 );
 
 CREATE TABLE events(
-    event_id INT NOT NULL,
+    event_id INT NOT NULL AUTO_INCREMENT,
     event_name VARCHAR(150),
     event_category VARCHAR(25),
     event_time DATETIME,

@@ -24,14 +24,25 @@
 			<input type="password" name="password"><br><br>
 
 			<strong>Select Your University</strong><br>
-			<select name="univ_sel">
-				<option value="0">UCF</option>
-				<option value="1">FSU</option>
-				<option value="2">FIU</option>
+			<select name="univ_sel" onchange="getText(this)">
+				<option value="0"> </option>
+				<option value="1">UCF</option>
+				<option value="2">FSU</option>
+				<option value="3">FIU</option>
 			</select><br><br>
 
 			<input type="submit" name="login_new"><br><br>
 		</form>
+
+		<input type="hidden" name="univ_select" id="txt_holder">
+
+		<script>
+		  function getText(element) 
+		  {
+			  var textHolder = element.options[element.selectedIndex].text
+			  document.getElementById("txt_holder").value = textHolder;
+		  }
+		</script>
 
 	</body>
 
