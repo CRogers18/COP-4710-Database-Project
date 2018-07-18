@@ -1,3 +1,5 @@
+<?php include('server.php') ?>
+
 <!DOCTYPE html>
 <html>
 	
@@ -8,11 +10,11 @@
 	<!-- Displaying this will require a permission level check, will not display options for users below the requisite level -->
 	<ul>
 		<!-- Visible to all users -->
-		<li><a href="mainPage.html">Home</a></li>
-		<li><a href="rsoRequestForm.html">Create a New RSO</a></li>
-		<li><a href="newEvent.html">Make an Event</a></li>
+		<li><a href="mainPage.php">Home</a></li>
+		<li><a href="rsoRequestForm.php">Create a New RSO</a></li>
+		<li><a href="newEvent.php">Make an Event</a></li>
 		<!-- Visible to Super Admins ONLY -->
-		<li><a href="requests.html">Event and RSO Requests</a></li>
+		<li><a href="requests.php">Event and RSO Requests</a></li>
 	</ul>
 
 	<head>
@@ -26,12 +28,17 @@
 			<h1>Make a New Event</h1>
 		</header>
 
-		<form>
+		<form method="post" action="newEvent.php">
+
+			<p>
+			<?php include('user_errors.php'); ?>
+			</p>
+
 			<strong>Event Name</strong><br>
-			<input type="text"><br><br>
+			<input type="text" name="ev_name"><br><br>
 
 			<strong>Category</strong><br>
-			<select name="category">
+			<select name="ev_category">
 				<option value="General Meeting">General Meeting</option>
 				<option value="fundr">Fundraising</option>
 				<option value="social">Social</option>
@@ -40,31 +47,29 @@
 
 			<!-- Access level should only be set-able by admins, do not show for students applying to make their own event -->
 			<strong>Access Level</strong><br>
-			<select name="access_lvl">
+			<select name="ev_access_lvl">
 				<option value="Public">Public</option>
 				<option value="Private">Private</option>
 				<option value="RSO">RSO</option>
 			</select><br><br>
 
 			<strong>Description</strong><br>
-			<textarea name="desc" rows = "15" cols = "50">Enter an event description here
-			</textarea><br><br>
+			<textarea name="ev_desc" rows = "15" cols = "50">Enter an event description here</textarea><br><br>
 
 			<strong>Event Time</strong><br>
-			<input type="time" name="time"><br><br>
+			<input type="time" name="ev_time"><br><br>
 
 			<strong>Event Date</strong><br>
-			<input type="date" id="event_time"
-					value="2018-07-09"
+			<input type="date" id="event_time" name="ev_date"
 					min = "2018-07-09" max = "2019-12-31"><br><br>
 
 			<strong>Contact Phone Number</strong><br>
-			<input type="text"><br><br>
+			<input type="text" name="ev_phone"><br><br>
 
 			<strong>Contact Email Address</strong><br>
-			<input type="email" name="email"><br><br>
+			<input type="email" name="ev_email"><br><br>
 
-			<input type="submit" name="submit"><br><br>
+			<input type="submit" name="event_submit"><br><br>
 			
 		</form>
 

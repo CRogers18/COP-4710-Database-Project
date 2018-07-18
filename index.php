@@ -27,7 +27,9 @@
 
 			<form method="post" action="index.php">
 
+				<p>
 				<?php include('user_errors.php'); ?>
+				</p>
 
 				<strong>User ID</strong><br>
 				<input type="text" name="username"><br><br>

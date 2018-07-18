@@ -42,15 +42,24 @@ CREATE TABLE events(
     event_id INT NOT NULL AUTO_INCREMENT,
     event_name VARCHAR(150),
     event_category VARCHAR(25),
+    event_privacy VARCHAR(10),
+    event_description VARCHAR(300),
     event_time DATETIME,
     event_contact_phone VARCHAR(15),
     event_contact_email VARCHAR(50),
-    event_privacy VARCHAR(10),
-    event_location_name VARCHAR(50),
-    event_location_latitude REAL,
-    event_location_longitude REAL,
-    owner_id INT NOT NULL,
+    owner_name VARCHAR(50),
     rso_id INT,
-    university_id INT,
+    university VARCHAR(25),
     PRIMARY KEY (event_id)
+);
+
+CREATE TABLE admin_requests(
+   request_id INT NOT NULL,
+   request_type VARCHAR(15),
+   requested_by INT NOT NULL,
+   details TEXT,
+   request_status VARCHAR(20),
+   PRIMARY KEY (request_id),
+   CONSTRAINT requested_by FOREIGN KEY (requested_by)
+   REFERENCES users(userid)
 );

@@ -15,11 +15,11 @@
 		<!-- Displaying this will require a permission level check, will not display options for users below the requisite level -->
 		<ul align="center">
 			<!-- Visible to all users -->
-			<li><a href="mainPage.html">Home</a></li>
-			<li><a href="rsoRequestForm.html">Create a New RSO</a></li>
-			<li><a href="newEvent.html">Make an Event</a></li>
+			<li><a href="mainPage.php">Home</a></li>
+			<li><a href="rsoRequestForm.php">Create a New RSO</a></li>
+			<li><a href="newEvent.php">Make an Event</a></li>
 			<!-- Visible to Super Admins ONLY -->
-			<li><a href="requests.html">Event and RSO Requests</a></li>
+			<li><a href="requests.php">Event and RSO Requests</a></li>
 		</ul>
 
 		<header>
