@@ -3,7 +3,8 @@ session_start();
 
 // session variables
 $username = "";
-$access_level = 1;
+$access_level = 0;
+$userID = -1;
 $universityID = "";
 $user_errors = array();
 
@@ -47,6 +48,12 @@ if(isset($_POST['login_existing']))
 			$uni_return = mysqli_query($db, $uni_query);
 			$user_uni = mysqli_fetch_assoc($uni_return);
 			$_SESSION['universityID'] = $user_uni['user_univ'];
+
+			// fetches user id from the database
+			$uid_query = "SELECT userid FROM users WHERE user_name='$username' AND user_password='$hash_pw'";
+			$uid_return = mysqli_query($db, $uid_query);
+			$uid_val = mysqli_fetch_assoc($uid_return);
+			$_SESSION['userID'] = $uid_val['userid'];	
 
 			header('location: mainPage.php');
 		}
@@ -92,6 +99,12 @@ if(isset($_POST['login_new']))
 		$_SESSION['access_level'] = $access_lvl;
 		$_SESSION['universityID'] = $univ;
 
+		// returns user ID
+		$uid_query = "SELECT userid FROM users WHERE user_name='$username' AND user_password='$hash_pw'";
+		$uid_return = mysqli_query($db, $uid_query);
+		$uid_val = mysqli_fetch_assoc($uid_return);
+		$_SESSION['userID'] = $uid_val['userid'];
+
 		header('location: mainPage.php');
 	}
 }
@@ -110,6 +123,11 @@ if(isset(($_POST['event_submit'])))
 	$ev_owner_name = $_SESSION['username'];
 	$uni = $_SESSION['universityID'];
 	$temp_rsoID = -1;
+	$u_id = $_SESSION['userID'];
+
+	// defaults for students requesting events
+	$req_status = "Under Review";
+	$event_visibility = "Public";
 
 	$ev_date_time = date('Y-m-d H:i:s', strtotime("$ev_date $ev_time"));
 
@@ -122,20 +140,27 @@ if(isset(($_POST['event_submit'])))
 	{
 		if($_SESSION['access_level'] == 0)
 		{
-		 	array_push($user_errors, "Insufficient user access level to post events!");
+			// adds a new request to the admin request queue table for events
+		 	$new_event_request_query = "INSERT INTO admin_event_requests (requested_by, event_name, event_category, event_privacy, event_description, event_time, event_contact_phone, event_contact_email, owner_name, rso_id, university, request_status) VALUES ('$u_id', '$ev_name', '$ev_category', '$event_visibility', '$ev_desc', '$ev_date_time', '$ev_phone', '$ev_email', '$ev_owner_name', '$temp_rsoID', '$uni', '$req_status')";
+			mysqli_query($db, $new_event_request_query);
+			echo mysqli_error($db);
 
+			header('location: mainPage.php');
+
+			echo '<script language="javascript">';
+			echo 'alert("Event request submitted successfully!")';
+			echo '</script>';
 		}
 
 		if($_SESSION['access_level'] == 1)
 		{
-			array_push($user_errors, "Sufficient user access level to post events!");
-
 			// TODO: replace temp_rsoID with actual RSO ID
-			$new_event_query = "INSERT INTO events (event_name, event_category, event_privacy, event_description, event_time, event_contact_phone, event_contact_email, owner_name, rso_id, university) VALUES ('$ev_name', '$ev_category', '$ev_access_lvl', '$ev_desc', '$ev_date_time', '$ev_phone', '$ev_email', '$ev_owner_name', '$temp_rsoID', '$uni')";
+			// adds a new event to the database
+			$new_event_query = "INSERT INTO events (event_name, event_category, event_privacy, event_description, event_time, event_contact_phone, event_contact_email, owner_name, rso_id, university) VALUES ('$u_id', '$ev_name', '$ev_category', '$ev_access_lvl', '$ev_desc', '$ev_date_time', '$ev_phone', '$ev_email', '$ev_owner_name', '$temp_rsoID', '$uni')";
 			mysqli_query($db, $new_event_query);
 			echo mysqli_error($db);
 
-		//	header('location: mainPage.php');
+			header('location: mainPage.php');
 
 			echo '<script language="javascript">';
 			echo 'alert("Event submitted successfully!")';
