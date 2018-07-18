@@ -1,3 +1,5 @@
+<?php include('server.php') ?>
+
 <!DOCTYPE html>
 <html>
  
@@ -41,40 +43,26 @@
 				<tr>
 					<th>RSO</th>
 					<th>Event Name</th>
-					<th>Event Date</th>
 					<th>Event Time</th>
 					<th>Contact</th>
 					<th></th>
 				</tr>
 
-				<tr>
-					<td>Test RSO</td>
-					<td><a href="eventInfo.html">Test Event</a></td>
-					<td>07/12/2018</td>
-					<td>6:30 PM</td>
-					<td><a href="">Admin1</a></td>
-					<td><a href="">Follow</a></td>
-				</tr>
+				<?php
 
-				<tr>
-					<td>Test2 RSO</td>
-					<td>Test2 Event</td>
-					<td>07/13/2018</td>
-					<td>6:30 PM</td>
-					<td><a href="">Admin2</a></td>
-					<td><a href="">Follow</a></td>
-				</tr>
+				$query_events = mysqli_query($db, "SELECT * FROM events");
 
-				<tr>
-					<td>Test3 RSO</td>
-					<td>Test3 Event</td>
-					<td>07/14/2018</td>
-					<td>6:30 PM</td>
-					<td><a href="">Admin3</a></td>
-					<td><a href="">Follow</a></td>
-				</tr>
-
+				while($events = mysqli_fetch_assoc($query_events)) { ?>
+					<tr>
+						<td>TODO RSO</td>
+						<td><?php echo $events['event_name']; ?></td>
+						<td><?php echo $events['event_time']; ?></td>
+						<td><a href=""><?php echo $events['owner_name']; ?></a></td>
+						<td><a href="">Follow</a></td>
+					</tr>
+				<?php } ?>
 			</table>
+
 		</div><br><br>
 
 		<header>

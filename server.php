@@ -72,6 +72,7 @@ if(isset($_POST['login_new']))
 	$password = mysqli_real_escape_string($db, $_POST['password']);
 	$univ = mysqli_real_escape_string($db, $_POST['univ_sel']);
 
+	// new users default to lowest access level
 	$access_lvl = 0;
 
 	// checks that no duplicate users exist in the database
@@ -111,6 +112,7 @@ if(isset($_POST['login_new']))
 
 if(isset(($_POST['event_submit'])))
 {
+	// event form field data extraction
 	$ev_name = mysqli_real_escape_string($db, $_POST['ev_name']);
 	$ev_category = mysqli_real_escape_string($db, $_POST['ev_category']);
 	$ev_access_lvl = mysqli_real_escape_string($db, $_POST['ev_access_lvl']);
@@ -120,17 +122,20 @@ if(isset(($_POST['event_submit'])))
 	$ev_phone = mysqli_real_escape_string($db, $_POST['ev_phone']);
 	$ev_email = mysqli_real_escape_string($db, $_POST['ev_email']);
 
+	// user session variables
 	$ev_owner_name = $_SESSION['username'];
 	$uni = $_SESSION['universityID'];
-	$temp_rsoID = -1;
 	$u_id = $_SESSION['userID'];
 
 	// defaults for students requesting events
 	$req_status = "Under Review";
 	$event_visibility = "Public";
+	$temp_rsoID = -1;
 
+	// combining input from event date and time fields into 1 datetime attribute
 	$ev_date_time = date('Y-m-d H:i:s', strtotime("$ev_date $ev_time"));
 
+	// checking for lack of input on new event form
 	if(empty($ev_name) || empty($ev_category) || empty($ev_access_lvl) || empty($ev_desc)|| empty($ev_time) || empty($ev_date) || empty($ev_phone) || empty($ev_email))
 	{
 		array_push($user_errors, "No fields can be left blank!");
@@ -138,6 +143,7 @@ if(isset(($_POST['event_submit'])))
 
 	else
 	{
+		// student access level
 		if($_SESSION['access_level'] == 0)
 		{
 			// adds a new request to the admin request queue table for events
@@ -152,24 +158,22 @@ if(isset(($_POST['event_submit'])))
 			echo '</script>';
 		}
 
+		// admin and super admin access levels
 		if($_SESSION['access_level'] == 1)
 		{
 			// TODO: replace temp_rsoID with actual RSO ID
 			// adds a new event to the database
-			$new_event_query = "INSERT INTO events (event_name, event_category, event_privacy, event_description, event_time, event_contact_phone, event_contact_email, owner_name, rso_id, university) VALUES ('$u_id', '$ev_name', '$ev_category', '$ev_access_lvl', '$ev_desc', '$ev_date_time', '$ev_phone', '$ev_email', '$ev_owner_name', '$temp_rsoID', '$uni')";
+			$new_event_query = "INSERT INTO events (event_name, event_category, event_privacy, event_description, event_time, event_contact_phone, event_contact_email, owner_name, rso_id, university) VALUES ('$ev_name', '$ev_category', '$ev_access_lvl', '$ev_desc', '$ev_date_time', '$ev_phone', '$ev_email', '$ev_owner_name', '$temp_rsoID', '$uni')";
 			mysqli_query($db, $new_event_query);
 			echo mysqli_error($db);
 
-			header('location: mainPage.php');
+		//	header('location: mainPage.php');
 
 			echo '<script language="javascript">';
 			echo 'alert("Event submitted successfully!")';
 			echo '</script>';
 		}
-
 	}
-
-
 }
 
 ?>
