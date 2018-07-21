@@ -200,12 +200,12 @@ if(isset($_POST['login'])))
 		// Adds new RSO to table or admin aproval queue depending on access level
 		if($_SESSION['access_level'] == 1)
 		{
-			$new_rso_query = "INSERT INTO rsos (rso_id, Description, Location, Leader, Member1, Member2, Member3, Member4, Member5) VALUES ($rso_name, $description, $University, $Member1, $Member1, $Member2, $Member3, $Member4, $Member5)";
+			$new_rso_query = "INSERT INTO rsos (rso_id, Description, Location, Leader, Member1, Member2, Member3, Member4, Member5) VALUES ('$rso_name', '$description', '$University', '$Member1', '$Member1', '$Member2', '$Member3', '$Member4', '$Member5')";
 			mysqli_query($db, $new_rso_query);
 			echo mysqli_error($db);
 			
 		}else if($_SESSION['access_level'] == 0){
-		 	$new_rso_request_query = "INSERT INTO admin_event_requests (requested_by, event_name, event_category, event_privacy, event_description, event_time, event_contact_phone, event_contact_email, owner_name, rso_id, university, request_status) VALUES ('$u_id', '$ev_name', '$ev_category', '$event_visibility', '$ev_desc', '$ev_date_time', '$ev_phone', '$ev_email', '$ev_owner_name', '$temp_rsoID', '$uni', '$req_status')";
+		 	$new_rso_request_query = "INSERT INTO admin_rso_requests (rso_name, University, description, Member1, Member2, Member3, Member4, Member5) VALUES ('$rso_name', '$University', '$description', '$Member1', '$Member2', '$Member3', '$Member4', '$Member5')";
 			mysqli_query($db, $new_rso_request_query);
 			echo mysqli_error($db);
 		}
