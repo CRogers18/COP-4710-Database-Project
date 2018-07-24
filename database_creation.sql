@@ -1,5 +1,3 @@
-CREATE DATABASE project;
-
 USE project;
 
 CREATE TABLE universities(
@@ -22,8 +20,10 @@ CREATE TABLE rsos(
 
 CREATE TABLE users(
     userid INT NOT NULL AUTO_INCREMENT,
-    user_password VARCHAR(25),
-    access_level VARCHAR (15),
+    user_name VARCHAR(50) NOT NULL,
+    user_password VARCHAR(50) NOT NULL,
+    user_univ VARCHAR(10),
+    access_level INT NOT NULL,
     PRIMARY KEY (userid),
     UNIQUE (userid)
 );
@@ -39,18 +39,35 @@ CREATE TABLE rso_member_lists(
 );
 
 CREATE TABLE events(
-    event_id INT NOT NULL,
+    event_id INT NOT NULL AUTO_INCREMENT,
     event_name VARCHAR(150),
     event_category VARCHAR(25),
+    event_privacy VARCHAR(10),
+    event_description VARCHAR(300),
     event_time DATETIME,
     event_contact_phone VARCHAR(15),
     event_contact_email VARCHAR(50),
-    event_privacy VARCHAR(10),
-    event_location_name VARCHAR(50),
-    event_location_latitude REAL,
-    event_location_longitude REAL,
-    owner_id INT NOT NULL,
+    owner_name VARCHAR(50),
     rso_id INT,
-    university_id INT,
+    university VARCHAR(25),
     PRIMARY KEY (event_id)
+);
+
+CREATE TABLE admin_event_requests(
+   request_id INT NOT NULL AUTO_INCREMENT,
+   requested_by INT NOT NULL,
+   event_name VARCHAR(150),
+   event_category VARCHAR(25),
+   event_privacy VARCHAR(10),
+   event_description VARCHAR(300),
+   event_time DATETIME,
+   event_contact_phone VARCHAR(15),
+   event_contact_email VARCHAR(50),
+   owner_name VARCHAR(50),
+   rso_id INT,
+   university VARCHAR(25),
+   request_status VARCHAR(50),
+   PRIMARY KEY (request_id),
+   CONSTRAINT requested_by FOREIGN KEY (requested_by)
+   REFERENCES users(userid)
 );
