@@ -177,7 +177,7 @@ if(isset(($_POST['event_submit'])))
 }
 
 // Create new RSO
-if(isset($_POST['login'])))
+if(isset($_POST['rso_request']))
 {
 	//Extract form data
 	$rso_name = mysqli_real_escape_string($db, $_POST['rsoName']);
@@ -188,6 +188,8 @@ if(isset($_POST['login'])))
 	$Member3 = mysqli_real_escape_string($db, $_POST['mem3']);
 	$Member4 = mysqli_real_escape_string($db, $_POST['mem4']);
 	$Member5 = mysqli_real_escape_string($db, $_POST['mem5']);
+	$request_status = mysqli_real_escape_string($db, 'Under Review');
+	$requested_by = $_SESSION['username'];
 	
 	// checking for lack of input on create new RSO form
 	if(empty($rso_name) || empty($University) || empty($description) || empty($Member1)|| 
@@ -200,16 +202,25 @@ if(isset($_POST['login'])))
 		// Adds new RSO to table or admin aproval queue depending on access level
 		if($_SESSION['access_level'] == 1)
 		{
-			$new_rso_query = "INSERT INTO rsos (rso_id, Description, Location, Leader, Member1, Member2, Member3, Member4, Member5) VALUES ('$rso_name', '$description', '$University', '$Member1', '$Member1', '$Member2', '$Member3', '$Member4', '$Member5')";
+			$new_rso_query = "INSERT INTO rsos (rso_name, description, University, Member1, Member2, Member3, Member4, Member5) VALUES ('$rso_name', '$description', '$University', '$Member1', '$Member1', '$Member2', '$Member3', '$Member4', '$Member5')";
 			mysqli_query($db, $new_rso_query);
 			echo mysqli_error($db);
 			
 		}else if($_SESSION['access_level'] == 0){
-		 	$new_rso_request_query = "INSERT INTO admin_rso_requests (rso_name, University, description, Member1, Member2, Member3, Member4, Member5) VALUES ('$rso_name', '$University', '$description', '$Member1', '$Member2', '$Member3', '$Member4', '$Member5')";
+		 	$new_rso_request_query = "INSERT INTO admin_rso_requests (requested_by, request_status, rso_name, University, description, Member1, Member2, Member3, Member4, Member5) VALUES ('$requested_by', '$request_status', '$rso_name', '$University', '$description', '$Member1', '$Member2', '$Member3', '$Member4', '$Member5')";
 			mysqli_query($db, $new_rso_request_query);
 			echo mysqli_error($db);
 		}
+		
+		echo '<script language="javascript">';
+		echo 'alert("Event submitted successfully!")';
+		echo '</script>';
 	}
+}
+
+if(isset($_POST['requestsList']))
+{
+	
 }
 
 ?>

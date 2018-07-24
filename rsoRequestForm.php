@@ -1,3 +1,5 @@
+<?php include('server.php') ?>
+
 <!DOCTYPE html>
 <html>
 	
@@ -56,7 +58,7 @@
 			<strong>Member 5</strong><br>
 			<input type="text" name="mem5"><br><br>
 
-			<input type="submit" name="login"><br><br>
+			<input type="submit" name="rso_request"><br><br>
 		</form>
 
 	</body>
