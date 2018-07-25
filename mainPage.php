@@ -54,7 +54,19 @@
 
 				while($events = mysqli_fetch_assoc($query_events)) { ?>
 					<tr>
-						<td>TODO RSO</td>
+						<td><?php 
+							
+							$rid = $events['rso_id'];
+							$get_rso_name = "SELECT rso_name FROM rsos WHERE rso_id='$rid'";
+							
+							$rname_return = mysqli_query($db, $get_rso_name);
+
+							$rname_val = mysqli_fetch_assoc($rname_return);
+							$rname = $rname_val['rso_name'];
+
+							echo $rname;
+
+						?></td>
 						<td><?php echo $events['event_name']; ?></td>
 						<td><?php echo $events['event_time']; ?></td>
 						<td><a href=""><?php echo $events['owner_name']; ?></a></td>
@@ -72,7 +84,7 @@
 		Show RSOs:
 		<select>
 			<option value="0">Near Me</option>
-			<option value="4">Following</option>
+			<option value="1">Following</option>
 		</select><br><br>
 
 		<div style="overflow-x:auto;">
@@ -80,30 +92,22 @@
 				<tr>
 					<th>RSO</th>
 					<th>Description</th>
-					<th>Dues</th>
+					<th>Leader</th>
 					<th></th>
 				</tr>
 
-				<tr>
-					<td>ACM@UCF</td>
-					<td>Association for Computing Machinery</td>
-					<td>$30</td>
-					<td><a href="">Follow</a></td>
-				</tr>
+				<?php
 
-				<tr>
-					<td>Cookie Club</td>
-					<td>Yes, we are a thing.</td>
-					<td>No Dues</td>
-					<td><a href="">Follow</a></td>
-				</tr>
+				$query_rsos = mysqli_query($db, "SELECT * FROM rsos");
 
-				<tr>
-					<td>Fight Club</td>
-					<td>Don't talk about us...</td>
-					<td>No Dues</td>
-					<td><a href="">Follow</a></td>
-				</tr>
+				while($rsos = mysqli_fetch_assoc($query_rsos)) { ?>
+					<tr>
+						<td><?php echo $rsos['rso_name']; ?></td>
+						<td><?php echo $rsos['rso_description']; ?></td>
+						<td><?php echo $rsos['rso_leader']; ?></td>
+						<td><a href="">Join</a></td>
+					</tr>
+				<?php } ?>
 
 			</table>
 		</div>		
