@@ -69,7 +69,7 @@
 
 							$uid_val = mysqli_fetch_assoc($query_owner);
 							$user = $uid_val['user_name'];
-							echo $user; 
+							echo $user;
 						?></td>
 						<td><?php echo $rso_req['rso_name']; ?></td>
 						<td>N/A</td>

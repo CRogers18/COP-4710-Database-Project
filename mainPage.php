@@ -14,6 +14,8 @@
 			<h1>Welcome to Events@UCF</h1>
 		</header>
 
+		<form method="post" action="mainPage.php">
+
 		<!-- Displaying this will require a permission level check, will not display options for users below the requisite level -->
 		<ul align="center">
 			<!-- Visible to all users -->
@@ -30,11 +32,8 @@
 
 		Show Events:
 		<select>
-			<option value="0">Near Me</option>
-			<option value="1">UCF</option>
-			<option value="2">FSU</option>
-			<option value="3">FIU</option>
-			<option value="4">Following</option>
+			<option value="Near Me">Near Me</option>
+			<option value="Following">Following</option>
 		</select><br><br>
 
 		<!-- Table will be dynamically filled via events list from the database and then filtered based on index selected from the user drop-down menu, default option will be set to 'near me' -->
@@ -46,12 +45,19 @@
 					<th>Event Name</th>
 					<th>Event Time</th>
 					<th></th>
-					<th></th>
+				<!--	<th></th> -->
 				</tr>
 
 				<?php
 
-				$query_events = mysqli_query($db, "SELECT * FROM events");
+				if($_SESSION['access_level'] == 0 || $_SESSION['access_level'] == 1)
+				{
+					$user_uni = $_SESSION['universityID'];
+					$query_events = mysqli_query($db, "SELECT * FROM events WHERE university='$user_uni' ORDER BY event_time ASC");
+				}
+
+				else if($_SESSION['access_level'] == 2)
+					$query_events = mysqli_query($db, "SELECT * FROM events ORDER BY event_time ASC");
 
 				while($events = mysqli_fetch_assoc($query_events)) { ?>
 					<tr>
@@ -76,7 +82,7 @@
 						<td><?php echo $events['event_name']; ?></td>
 						<td><?php echo $events['event_time']; ?></td>
 						<td><a href="eventInfo.php?event_id=<?php echo $events['event_id']?>">More Info</a></td>
-						<td><a href="">Follow</a></td>
+						<!--<td><a href="">Follow</a></td> -->
 					</tr>
 				<?php } ?>
 			</table>
@@ -104,14 +110,29 @@
 
 				<?php
 
-				$query_rsos = mysqli_query($db, "SELECT * FROM rsos");
+				if($_SESSION['access_level'] == 0 || $_SESSION['access_level'] == 1)
+				{
+					$user_uni = $_SESSION['universityID'];
+
+					$get_uni_id = "SELECT university_id FROM universities WHERE university_name='$user_uni'";
+					$r_uni_id = mysqli_query($db, $get_uni_id);
+					$uni_id_val = mysqli_fetch_assoc($r_uni_id);
+					$uni_id = $uni_id_val['university_id'];
+
+					$query_rsos = mysqli_query($db, "SELECT * FROM rsos WHERE university_id='$uni_id'");
+				}
+
+				else if($_SESSION['access_level'] == 2)
+					$query_rsos = mysqli_query($db, "SELECT * FROM rsos");
 
 				while($rsos = mysqli_fetch_assoc($query_rsos)) { ?>
 					<tr>
-						<td><?php echo $rsos['rso_name']; ?></td>
+						<td name="r_name"><?php echo $rsos['rso_name']; ?></td>
 						<td><?php echo $rsos['rso_description']; ?></td>
-						<td><?php echo $rsos['rso_leader']; ?></td>
-						<td><a href="">Join</a></td>
+						<td name="r_leader"><?php echo $rsos['rso_leader']; ?></td>
+						<td>
+							<input type="submit" name="join_rso" value="Join">
+						</td>
 					</tr>
 				<?php } ?>
 

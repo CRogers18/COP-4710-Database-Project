@@ -402,7 +402,7 @@ if(isset(($_POST['update_request'])))
 				mysqli_query($db, $update_requests);
 			}
 
-		//	header('location: requests.php');
+			header('location: requests.php');
 
 			break;
 
@@ -426,10 +426,23 @@ if(isset(($_POST['update_request'])))
 
 		case "Under Review":
 				header('location: requests.php');
-			break;
-		
+			break;	
 	}
+}
 
+if(isset(($_POST['join_rso'])))
+{
+	$r_name = mysqli_real_escape_string($db, $_POST['r_name']);
+	$r_leader = mysqli_real_escape_string($db, $_POST['r_leader']);
+	$u_id = $_SESSION['userID'];
+
+	$get_rso_id = "SELECT rso_id FROM rsos WHERE rso_name='$r_name'";
+	$rid_return = mysqli_query($db, $get_rso_id);
+	$rid_val = mysqli_fetch_assoc($rid_return);
+	$rid = $rid_val['rso_id'];
+
+	$join_rso_query = "INSERT INTO rso_member_lists (rso_id, userid, rso_owner) VALUES ('$rid', '$u_id', '$r_leader')";
+	mysqli_query($join_rso_query);
 }
 
 ?>
