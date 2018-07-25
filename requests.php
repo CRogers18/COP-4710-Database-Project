@@ -33,7 +33,6 @@
 			<table>
 
 				<tr>
-					<th>Request ID</th>
 					<th>Type</th>
 					<th>Requested By</th>
 					<th>Name</th>
@@ -48,13 +47,12 @@
 
 				while($event_req = mysqli_fetch_assoc($query_event_req)) { ?>
 					<tr>
-						<td><?php echo "ev_" . $event_req['request_id']; ?></td>
-						<td><?php $r_str = "Create Event Request"; echo $r_str; ?></td>
+						<td><?php $r_str = "New Event Request"; echo $r_str; ?></td>
 						<td><?php echo $event_req['owner_name']; ?></td>
 						<td><?php echo $event_req['event_name']; ?></td>
 						<td><?php echo $event_req['event_time']; ?></td>
 						<td><?php echo $event_req['university']; ?></td>
-						<td><a href="requestInfo.php?request_id=<?php echo $event_req['requested_by']; ?>&request_type=<?php echo $r_str; ?>">Details</a></td>
+						<td><a href="requestInfo.php?request_id=<?php echo $event_req['request_id']; ?>&request_type=<?php echo $r_str; ?>">Details</a></td>
 					</tr>
 				<?php } ?>
 
@@ -64,7 +62,6 @@
 
 				while($rso_req = mysqli_fetch_assoc($query_rso_req)) { ?>
 					<tr>
-						<td><?php echo "rso_" . $rso_req['request_id']; ?></td>
 						<td><?php $r_str = "Create RSO Request"; echo $r_str; ?></td>
 						<td><?php 
 							$req_id = $rso_req['requested_by'];
@@ -77,7 +74,7 @@
 						<td><?php echo $rso_req['rso_name']; ?></td>
 						<td>N/A</td>
 						<td><?php echo $rso_req['University']; ?></td>
-						<td><a href="requestInfo.php?request_id=<?php echo $rso_req['requested_by']; ?>&request_type=<?php echo $r_str; ?>">Details</a></td>
+						<td><a href="requestInfo.php?request_id=<?php echo $rso_req['request_id']; ?>&request_type=<?php echo $r_str; ?>">Details</a></td>
 					</tr>
 				<?php } ?>
 

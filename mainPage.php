@@ -63,7 +63,11 @@
 							$rname_return = mysqli_query($db, $get_rso_name);
 
 							$rname_val = mysqli_fetch_assoc($rname_return);
-							$rname = $rname_val['rso_name'];
+
+							if(mysqli_num_rows($rname_return) == 0)
+								$rname = "N/A";
+							else
+								$rname = $rname_val['rso_name'];
 
 							echo $rname;
 

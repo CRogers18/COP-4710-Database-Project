@@ -307,4 +307,129 @@ if(isset(($_POST['comment_submit'])))
 	echo mysqli_error($db);
 }
 
+if(isset(($_POST['update_request'])))
+{
+	$new_req_status = mysqli_real_escape_string($db, $_POST['request_status_sel']);
+
+	$r_type  = $_GET['request_type'];
+	$r_id = $_GET['request_id'];
+
+	switch ($new_req_status) {
+
+		case "Accepted":
+			
+			if($r_type == "New Event Request")
+			{
+				$get_event_data = "SELECT * FROM admin_event_requests WHERE request_id='$r_id'";
+				$new_event_res = mysqli_query($db, $get_event_data);
+				$new_event_return = mysqli_fetch_assoc($new_event_res);
+
+				$ev_name = $new_event_return['event_name'];
+				$ev_category = $new_event_return['event_category'];
+			//	$ev_access_lvl = mysqli_real_escape_string($db, $_POST['ev_access_lvl']);
+				$ev_privacy = $new_event_return['event_privacy'];
+				$ev_desc = $new_event_return['event_description'];
+				$ev_time = $new_event_return['event_time'];
+				$ev_phone = $new_event_return['event_contact_phone'];
+				$ev_email = $new_event_return['event_contact_email'];
+				$ev_rso_host = $new_event_return['owner_name'];
+				$rid = -1;
+				$uni = $new_event_return['university'];
+
+				$new_event_query = "INSERT INTO events (event_name, event_category, event_privacy, event_description, event_time, event_contact_phone, event_contact_email, owner_name, rso_id, university) VALUES ('$ev_name', '$ev_category', '$ev_privacy', '$ev_desc', '$ev_time', '$ev_phone', '$ev_email', '$ev_rso_host', '$rid', '$uni')";
+				mysqli_query($db, $new_event_query);
+
+				$update_requests = "UPDATE admin_event_requests SET request_status='$new_req_status' WHERE request_id='$r_id'";
+				mysqli_query($db, $update_requests);
+			}
+
+			else if($r_type == "Create RSO Request")
+			{
+				$get_rso_data = "SELECT * FROM admin_rso_requests WHERE request_id='$r_id'";
+				$new_rso_res = mysqli_query($db, $get_rso_data);
+				$new_rso_return = mysqli_fetch_assoc($new_rso_res);
+
+				$r_name = $new_rso_return['rso_name'];
+				$r_uni = $new_rso_return['University'];
+				$r_desc = $new_rso_return['Description'];
+				$mem1 = $new_rso_return['Member1'];
+				$mem2 = $new_rso_return['Member2'];
+				$mem3 = $new_rso_return['Member3'];
+				$mem4 = $new_rso_return['Member4'];
+				$mem5 = $new_rso_return['Member5'];
+
+				$get_uni_id = "SELECT university_id FROM universities WHERE university_name='$r_uni'";
+				$r_uni_id = mysqli_query($db, $get_uni_id);
+				$uni_id_val = mysqli_fetch_assoc($r_uni_id);
+				$uni_id = $uni_id_val['university_id'];
+
+				$req_id = $new_rso_return['requested_by'];
+				$query_owner = mysqli_query($db, "SELECT user_name FROM users WHERE userid='$req_id'");
+
+				$uid_val = mysqli_fetch_assoc($query_owner);
+				$rso_owner_name = $uid_val['user_name'];
+
+				$members = array($mem1, $mem2, $mem3, $mem4, $mem5);
+
+				$new_rso_query = "INSERT INTO rsos (rso_name, rso_leader, rso_description, university_id) VALUES ('$r_name', '$rso_owner_name', '$r_desc', '$uni_id')";
+
+				mysqli_query($db, $new_rso_query);
+				echo mysqli_error($db);
+
+				$get_rso_id = "SELECT rso_id FROM rsos WHERE rso_name='$r_name'";
+				$rid_return = mysqli_query($db, $get_rso_id);
+				$rid_val = mysqli_fetch_assoc($rid_return);
+				$rid = $rid_val['rso_id'];
+				echo mysqli_error($db);
+
+				for($i = 0; $i < 5; $i++)
+				{
+					$user = $members[$i];
+
+					$uid_query = "SELECT userid FROM users WHERE user_name='$user'";
+					$uid_return = mysqli_query($db, $uid_query);
+					$uid_val = mysqli_fetch_assoc($uid_return);
+					$new_uid = $uid_val['userid'];
+					echo mysqli_error($db);
+
+					$new_rso_member = "INSERT INTO rso_member_lists (rso_id, userid, rso_owner) VALUES ('$rid', '$new_uid', '$rso_owner_name')";
+
+					mysqli_query($db, $new_rso_member);
+					echo mysqli_error($db);
+				}
+
+				$update_requests = "UPDATE admin_rso_requests SET request_status='$new_req_status' WHERE request_id='$r_id'";
+				mysqli_query($db, $update_requests);
+			}
+
+		//	header('location: requests.php');
+
+			break;
+
+		case "Denied":
+
+				if($r_type == "New Event Request")
+				{
+					$update_requests = "UPDATE admin_event_requests SET request_status='$new_req_status' WHERE request_id='$r_id'";
+					mysqli_query($db, $update_requests);					
+				}
+
+				else if($r_type == "Create RSO Request")
+				{
+					$update_requests = "UPDATE admin_rso_requests SET request_status='$new_req_status' WHERE request_id='$r_id'";
+					mysqli_query($db, $update_requests);
+				}
+
+				header('location: requests.php');
+
+			break;
+
+		case "Under Review":
+				header('location: requests.php');
+			break;
+		
+	}
+
+}
+
 ?>

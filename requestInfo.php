@@ -29,15 +29,17 @@
 		$r_id = $_GET['request_id'];
 	?>
 
-	<form method="post" action="eventInfo.php?request_id=<?php echo $_GET['request_id'];?> &request_type=<?php echo $r_type;?>">
+	<form method="post" action="requestInfo.php?request_id=<?php echo $_GET['request_id'];?> &request_type=<?php echo $r_type;?>">
 
 	<?php
 
-		if($r_type == "Create Event Request")
+		if($r_type == "New Event Request")
 		{
 			$get_request_query = "SELECT * FROM admin_event_requests WHERE request_id='$r_id' LIMIT 1";
 			$request_return = mysqli_query($db, $get_request_query);
-			echo mysqli_error($db);
+
+			if(mysqli_num_rows($request_return) == 0)
+				echo "ERROR";
 
 			$request_data = mysqli_fetch_assoc($request_return);
 
@@ -83,7 +85,21 @@
 			$req_rso_m3 = $request_data['Member3'];
 			$req_rso_m4 = $request_data['Member4'];
 			$req_rso_m5 = $request_data['Member5'];
-		} ?>
+
+			$get_owner_query = "SELECT user_name FROM users WHERE userid='$req_rso_owner_id'";
+			$owner_return = mysqli_query($db, $get_owner_query);
+			$owner_name = mysqli_fetch_assoc($owner_return);
+		?>
+
+			<h2>New RSO Request: <?php echo $req_rso_name; ?></h2>
+			<p>
+			   <strong>Leader:     </strong><?php echo $owner_name['user_name']; ?> <br>
+			   <strong>Description: </strong><?php echo $req_rso_desc; ?> <br>
+			   <strong>University:     </strong><?php echo $req_rso_uni; ?> <br>
+			   <strong>Members: </strong><?php echo $req_rso_m1 . ", "; echo $req_rso_m2 . ", "; echo $req_rso_m3 . ", "; echo $req_rso_m4 . ", "; echo $req_rso_m5; ?> <br><br>
+			</p>
+
+		<?php } ?>
 
 	<select name="request_status_sel">
 		<option value="Under Review">Under Review</option>
