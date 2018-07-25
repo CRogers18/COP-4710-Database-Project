@@ -99,7 +99,8 @@
             
                 <div align="center">
                 <br><br>Logged in as: <?php echo $_SESSION['username'] ?> <br /><br />
-                <button class="btn btn-dark"><a href="index.php" id="eventInfoLogout">LOGOUT</a></button><br></div>
+                <button class="btn btn-dark"><a href="index.php" id="eventInfoLogout">LOGOUT</a></button><br>
+                </div>
             
 
                 <script>

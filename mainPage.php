@@ -1,3 +1,6 @@
+<?php include('server.php') ?>
+
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -34,33 +37,38 @@
                     <thead>
                         <tr>
                             <th>RSO</th>
+                            <th>University</th>
                             <th>Event Name</th>
                             <th>Event Time</th>
-                            <th>Contact</th>
+                            <th>Details</th>
                             <th>Follow</th>
                         </tr>
                     </thead>
                     <tbody>
-                            <?php
-                            $query_events = mysqli_query($db, "SELECT * FROM events");
-                            while($events = mysqli_fetch_assoc($query_events)) { ?>
-                                <tr>
-                                    <td><?php 
-                                        
-                                        $rid = $events['rso_id'];
-                                        $get_rso_name = "SELECT rso_name FROM rsos WHERE rso_id='$rid'";
-                                        
-                                        $rname_return = mysqli_query($db, $get_rso_name);
-                                        $rname_val = mysqli_fetch_assoc($rname_return);
-                                        $rname = $rname_val['rso_name'];
-                                        echo $rname;
-                                    ?></td>
-                                    <td><?php echo $events['event_name']; ?></td>
-                                    <td><?php echo $events['event_time']; ?></td>
-                                    <td><a href=""><?php echo $events['owner_name']; ?></a></td>
-                                    <td><a href="">Follow</a></td>
-                                </tr>
-                            <?php } ?>
+            <?php
+				$query_events = mysqli_query($db, "SELECT * FROM events");
+				while($events = mysqli_fetch_assoc($query_events)) { ?>
+					<tr>
+						<td><?php 
+							
+							$rid = $events['rso_id'];
+							$get_rso_name = "SELECT rso_name FROM rsos WHERE rso_id='$rid'";
+							
+							$rname_return = mysqli_query($db, $get_rso_name);
+							$rname_val = mysqli_fetch_assoc($rname_return);
+							if(mysqli_num_rows($rname_return) == 0)
+								$rname = "N/A";
+							else
+								$rname = $rname_val['rso_name'];
+							echo $rname;
+						?></td>
+						<td><?php echo $events['university']; ?></td>
+						<td><?php echo $events['event_name']; ?></td>
+						<td><?php echo $events['event_time']; ?></td>
+						<td><a href="eventInfo.php?event_id=<?php echo $events['event_id']?>">More Info</a></td>
+						<td><a href="">Follow</a></td>
+					</tr>
+			<?php } ?>
                     </tbody>
                 </table>
         </div>
@@ -77,20 +85,23 @@
                         </tr>
                     </thead>
                     <tbody>
-                            <?php
-                            $query_rsos = mysqli_query($db, "SELECT * FROM rsos");
-                            while($rsos = mysqli_fetch_assoc($query_rsos)) { ?>
-                                <tr>
-                                    <td><?php echo $rsos['rso_name']; ?></td>
-                                    <td><?php echo $rsos['rso_description']; ?></td>
-                                    <td><?php echo $rsos['rso_leader']; ?></td>
-                                    <td><a href="">Join</a></td>
-                                </tr>
-                            <?php } ?>
+            <?php
+				$query_rsos = mysqli_query($db, "SELECT * FROM rsos");
+				while($rsos = mysqli_fetch_assoc($query_rsos)) { ?>
+					<tr>
+						<td><?php echo $rsos['rso_name']; ?></td>
+						<td><?php echo $rsos['rso_description']; ?></td>
+						<td><?php echo $rsos['rso_leader']; ?></td>
+						<td><a href="">Join</a></td>
+					</tr>
+		    <?php } ?>
                     </tbody>
                 </table>
         </div>
-
+        <div align="center">
+                <br><br>Logged in as: <?php echo $_SESSION['username'] ?> <br /><br />
+                <button class="btn btn-dark"><a href="index.php" id="eventInfoLogout">LOGOUT</a></button><br>
+        </div>
         <script>
 
             var accessLevel = "<?php echo $_SESSION['access_level']?>"
