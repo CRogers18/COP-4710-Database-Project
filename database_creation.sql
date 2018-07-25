@@ -90,10 +90,11 @@ CREATE TABLE admin_rso_requests(
 );
 
 CREATE TABLE comments(
+    comment_id INT NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL,
     user_name VARCHAR(50) NOT NULL,
     event_id INT NOT NULL,
     comment VARCHAR(250),
-    PRIMARY KEY (user_id),
+    PRIMARY KEY (comment_id),
     FOREIGN KEY (event_id) REFERENCES events (event_id)
 );

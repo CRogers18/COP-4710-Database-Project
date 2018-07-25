@@ -42,9 +42,10 @@
 			<table>
 				<tr>
 					<th>RSO</th>
+					<th>University</th>
 					<th>Event Name</th>
 					<th>Event Time</th>
-					<th>Contact</th>
+					<th></th>
 					<th></th>
 				</tr>
 
@@ -67,9 +68,10 @@
 							echo $rname;
 
 						?></td>
+						<td><?php echo $events['university']; ?></td>
 						<td><?php echo $events['event_name']; ?></td>
 						<td><?php echo $events['event_time']; ?></td>
-						<td><a href=""><?php echo $events['owner_name']; ?></a></td>
+						<td><a href="eventInfo.php?event_id=<?php echo $events['event_id']?>">More Info</a></td>
 						<td><a href="">Follow</a></td>
 					</tr>
 				<?php } ?>
@@ -110,7 +112,10 @@
 				<?php } ?>
 
 			</table>
-		</div>		
+		</div>
+
+		<div align="center">
+		<br><br>Logged in as: <?php echo $_SESSION['username'] ?> <a href="index.php"><strong><br>LOGOUT</strong></a><br></div>
 
 	</body>
 	 

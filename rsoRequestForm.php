@@ -66,6 +66,9 @@
 			<input type="submit" name="submit_rso_req"><br><br>
 		</form>
 
+		<div align="center">
+		<br><br>Logged in as: <?php echo $_SESSION['username'] ?> <a href="index.php"><strong><br>LOGOUT</strong></a><br></div>
+
 	</body>
 
 </html>

@@ -1,3 +1,5 @@
+<?php include('server.php') ?>
+
 <!DOCTYPE html>
 <html align="center">
 	
@@ -15,35 +17,91 @@
 	<!-- Displaying this will require a permission level check, will not display options for users below the requisite level -->
 	<ul>
 		<!-- Visible to all users -->
-		<li><a href="mainPage.html">Home</a></li>
-		<li><a href="rsoRequestForm.html">Create a New RSO</a></li>
-		<li><a href="newEvent.html">Make an Event</a></li>
+		<li><a href="mainPage.php">Home</a></li>
+		<li><a href="rsoRequestForm.php">Create a New RSO</a></li>
+		<li><a href="newEvent.php">Make an Event</a></li>
 		<!-- Visible to Super Admins ONLY -->
-		<li><a href="requests.html">Event and RSO Requests</a></li>
+		<li><a href="requests.php">Event and RSO Requests</a></li>
 	</ul>
 
-	<h2>Test Event</h2><br>
+	<form method="post" action="eventInfo.php?event_id=<?php echo $_GET['event_id'] ?>">
 
-	Time: 7:30PM<br>
-	Date: July 25th<br>
-	Location: UCF<br><br>
-	This is an example of a test event description.<br><br><br>
+	<?php
+
+		$this_event_id  = $_GET['event_id'];
+
+		$get_event_info = "SELECT * FROM events WHERE event_id='$this_event_id'";
+		
+		$event_return = mysqli_query($db, $get_event_info);
+		$event_data = mysqli_fetch_assoc($event_return);
+		
+		$event_name = $event_data['event_name'];
+		$event_time = $event_data['event_time'];
+		$event_loc = $event_data['university'];
+		$event_desc = $event_data['event_description'];
+		$event_phone = $event_data['event_contact_phone'];
+		$event_email = $event_data['event_contact_email'];
+
+		$rid = $event_data['rso_id'];
+		$get_rso_name = "SELECT rso_name FROM rsos WHERE rso_id='$rid'";
+		
+		$rname_return = mysqli_query($db, $get_rso_name);
+
+		if(mysqli_num_rows($rname_return) == 0)
+			$event_rso = $event_data['owner_name'];
+		else
+		{
+			$rname_val = mysqli_fetch_assoc($rname_return);
+			$event_rso = $rname_val['rso_name'];
+		}
+
+	?>
+
+	<h2><?php echo $event_name; ?></h2>
+
+	<p>
+	   <strong>Hosted By:     </strong><?php echo $event_rso; ?> <br>
+	   <strong>Time:     </strong><?php echo $event_time; ?> <br>
+	   <strong>Location: </strong><?php echo $event_loc; ?> <br><br>
+	   <?php echo $event_desc; ?> <br><br>
+	   <strong>Contact Phone Number: </strong> <?php echo $event_phone; ?> <br>
+	   <strong>Contact Email: </strong> <?php echo $event_email; ?> <br><br>
+	</p>
+
 	<strong>Comments:</strong><br><br>
-	<strong>User A:</strong> Looking forward to it!<br><br>
-	<strong>User B:</strong> How many friends can I bring along?<br><br>
+	<?php
+
+		$get_event_comments = "SELECT * FROM comments WHERE event_id='$this_event_id'";
+		$comments_return = mysqli_query($db, $get_event_comments);
+
+		if(mysqli_num_rows($comments_return) == 0)
+		{ ?>
+			<p>There doesn't seem to be any comments yet...</p>
+	<?php }
+
+		else
+		{
+			while($comments_data = mysqli_fetch_assoc($comments_return))
+			{ 
+				$commenter = $comments_data['user_name'];
+				$user_comment = $comments_data['comment'];
+			?>
+
+				<p>
+					<strong><?php echo $commenter; ?>: </strong>
+					<?php echo $user_comment ?>
+				</p>
+			
+	  		<?php } ?>
+	<?php	} ?>
+
 	<div id="comment"></div><br>
-	<textarea id="commentBox" rows = "5" cols = "50">Add a comment here</textarea><br><br>
-	<button type="button" onclick="addComment()">Submit</button><br><br>
+	<textarea name="commentBox" rows = "5" cols = "50">Add a comment here</textarea><br><br>
+	<input type="submit" name="comment_submit"><br><br>
+
+	<div align="center">
+	<br><br>Logged in as: <?php echo $_SESSION['username'] ?> <a href="index.php"><strong><br>LOGOUT</strong></a><br></div>
 
 	</body>
-
-	<script>
-		function addComment()
-		{
-			alert("test");
-			var x = document.getElementByID("head2").value;
-			alert(x);
-		}
-	</script>
 
 </html>

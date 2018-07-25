@@ -10,13 +10,6 @@
 			<link href="main.css" rel="stylesheet" type="text/css" />
 		</head>
 
-		<script>
-			function newUser()
-			{
-
-			}
-		</script>
-
 		<body>
 
 			<header>

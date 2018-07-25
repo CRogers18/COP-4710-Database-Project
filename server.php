@@ -275,12 +275,7 @@ if(isset(($_POST['submit_rso_req'])))
 				echo mysqli_error($db);
 			}
 			
-
 			header('location: mainPage.php');
-
-		//	echo '<script language="javascript">';
-		//	echo 'alert("Event request submitted successfully!")';
-		//	echo '</script>';
 		}
 
 		// student access level
@@ -291,12 +286,25 @@ if(isset(($_POST['submit_rso_req'])))
 			echo mysqli_error($db);
 
 			header('location: mainPage.php');
-
-		//	echo '<script language="javascript">';
-		//	echo 'alert("Event submitted successfully!")';
-		//	echo '</script>';
 		}
 	}
+}
+
+if(isset(($_POST['comment_submit'])))
+{
+	$user_name = $_SESSION['username'];
+	$comment = mysqli_real_escape_string($db, $_POST['commentBox']);
+
+	$uid_query = "SELECT userid FROM users WHERE user_name='$user_name'";
+	$uid_return = mysqli_query($db, $uid_query);
+	$uid_val = mysqli_fetch_assoc($uid_return);
+	$commenter_uid = $uid_val['userid'];
+
+	$ev_id  = $_GET['event_id'];
+
+	$new_comment_query = "INSERT INTO comments (user_id, user_name, event_id, comment) VALUES ('$commenter_uid', '$user_name', '$ev_id', '$comment')";
+	mysqli_query($db, $new_comment_query);
+	echo mysqli_error($db);
 }
 
 ?>

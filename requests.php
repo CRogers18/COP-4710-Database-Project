@@ -39,7 +39,7 @@
 					<th>Name</th>
 					<th>Time</th>
 					<th>University</th>
-					<th>Details</th>
+					<th></th>
 				</tr>
 
 				<?php
@@ -49,12 +49,12 @@
 				while($event_req = mysqli_fetch_assoc($query_event_req)) { ?>
 					<tr>
 						<td><?php echo "ev_" . $event_req['request_id']; ?></td>
-						<td>Event Request</td>
+						<td><?php $r_str = "Create Event Request"; echo $r_str; ?></td>
 						<td><?php echo $event_req['owner_name']; ?></td>
 						<td><?php echo $event_req['event_name']; ?></td>
 						<td><?php echo $event_req['event_time']; ?></td>
 						<td><?php echo $event_req['university']; ?></td>
-						<td><a href="">Details</a></td>
+						<td><a href="requestInfo.php?request_id=<?php echo $event_req['requested_by']; ?>&request_type=<?php echo $r_str; ?>">Details</a></td>
 					</tr>
 				<?php } ?>
 
@@ -65,7 +65,7 @@
 				while($rso_req = mysqli_fetch_assoc($query_rso_req)) { ?>
 					<tr>
 						<td><?php echo "rso_" . $rso_req['request_id']; ?></td>
-						<td>New RSO Request</td>
+						<td><?php $r_str = "Create RSO Request"; echo $r_str; ?></td>
 						<td><?php 
 							$req_id = $rso_req['requested_by'];
 							$query_owner = mysqli_query($db, "SELECT user_name FROM users WHERE userid='$req_id'");
@@ -77,13 +77,16 @@
 						<td><?php echo $rso_req['rso_name']; ?></td>
 						<td>N/A</td>
 						<td><?php echo $rso_req['University']; ?></td>
-						<td><a href="">Details</a></td>
+						<td><a href="requestInfo.php?request_id=<?php echo $rso_req['requested_by']; ?>&request_type=<?php echo $r_str; ?>">Details</a></td>
 					</tr>
 				<?php } ?>
 
 			</table>
 
-		</div><br><br>
+		</div>
+
+		<div align="center">
+		<br><br>Logged in as: <?php echo $_SESSION['username'] ?> <a href="index.php"><strong><br>LOGOUT</strong></a><br></div>
 
 	</body>
 
