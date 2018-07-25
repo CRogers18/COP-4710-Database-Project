@@ -1,64 +1,46 @@
-header h1, h2
-{
-	background: green;
-	color: yellow;
-	font-family: arial;
-	padding: 20px;
-	text-align: center;
-}
-
-body img
-{
-	width: 250px;
-	height: auto;
-}
-
-body 
-{
-	font-family: arial;
-	font-size: 24px;
-}
-
-h1
-{
-	color: yellow;
-}
-
-p
-{
-	color: #000;
-}
-
-a
-{
-	text-decoration: none;
-	color: inherit;
-}
-
-body ul
-{
-	margin: 0px;
-}
-
-body ul li
-{
-	list-style-type: none;
-	display: inline-block;
-	padding: 5px;
-	background: green;
-	color: yellow;
-}
-
-table 
-{
-    border-collapse: collapse;
-    border-spacing: 0;
+/* Welcome Styles */
+#welcomeImage{
+    height: 100%;
     width: 100%;
-    border: 1px solid #ddd;
 }
 
-th, td 
-{
+.welcomeContainer{
     text-align: center;
-    padding: 8px;
+    position: relative;
+    top: 40%;
+}
+
+.welcomeContainer > p{
+    font-size: 7em;
+}
+
+.welcomeContainer > form > button > a{
+    color: white;
+    text-decoration: none;
+}
+
+/* Body Styles */
+body {
+    font-family: 'Quicksand', sans-serif;
+}
+
+.banner{
+    height: 150px;
+    width: 100%;
+	background-color: black;
+	position: absolute;
+	top: 0px;
+}
+
+.bannerHeader{
+    position: absolute;
+    top: 2.5%;
+    color: white;
+    margin-left: 5%;
+    font-size: 5em;
+}
+
+.formContainer{
+    text-align: center;
+    margin-top: 10%;
 }
